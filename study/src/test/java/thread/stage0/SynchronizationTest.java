@@ -30,6 +30,7 @@ class SynchronizationTest {
         var executorService = Executors.newFixedThreadPool(3);
         var synchronizedMethods = new SynchronizedMethods();
 
+
         IntStream.range(0, 1000)
                 .forEach(count -> executorService.submit(synchronizedMethods::calculate));
         executorService.awaitTermination(500, TimeUnit.MILLISECONDS);
@@ -41,7 +42,8 @@ class SynchronizationTest {
 
         private int sum = 0;
 
-        public void calculate() {
+        public synchronized void calculate() {
+
             setSum(getSum() + 1);
         }
 

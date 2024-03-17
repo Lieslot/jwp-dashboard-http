@@ -3,7 +3,8 @@ handlebars:
 
 server:
   tomcat:
-    accept-count: 1
-    max-connections: 1
+    accept-count: 1 # 현재 스레드 풀이 모두 사용 중일 때 request에 대한 대기 queue의 사이즈
+    max-connections: 10 # 동시에 유지할 수 있는 최대 커넥션 갯수
     threads:
-      max: 2
+      max: 1 # 워커 스레드의 갯수
+

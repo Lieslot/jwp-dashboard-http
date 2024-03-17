@@ -1,15 +1,19 @@
 package thread.stage2;
 
+import java.lang.Thread.State;
 import org.junit.jupiter.api.Test;
 
 import java.net.http.HttpResponse;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AppTest {
 
     private static final AtomicInteger count = new AtomicInteger(0);
+    private static final Logger log = LoggerFactory.getLogger(SampleController.class);
 
     /**
      * 1. App 클래스의 애플리케이션을 실행시켜 서버를 띄운다.
@@ -21,6 +25,7 @@ class AppTest {
      * - http call count
      * - 테스트 결과값
      */
+
     @Test
     void test() throws Exception {
         final var NUMBER_OF_THREAD = 10;
@@ -29,7 +34,7 @@ class AppTest {
         for (int i = 0; i < NUMBER_OF_THREAD; i++) {
             threads[i] = new Thread(() -> incrementIfOk(TestHttpUtils.send("/test")));
         }
-
+        Thread firstThread = threads[0];
         for (final var thread : threads) {
             thread.start();
             Thread.sleep(50);
@@ -43,7 +48,10 @@ class AppTest {
     }
 
     private static void incrementIfOk(final HttpResponse<String> response) {
-        if (response.statusCode() == 200) {
+
+        int statusCode = response.statusCode();
+        log.info("http status code : {}", statusCode);
+        if (statusCode == 200) {
             count.incrementAndGet();
         }
     }
