@@ -1,22 +1,25 @@
 package org.apache.catalina.connector;
 
-import org.apache.coyote.http11.Http11Processor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.apache.coyote.http11.Http11Processor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+
+//
 public class Connector implements Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(Connector.class);
 
     private static final int DEFAULT_PORT = 8080;
+
     private static final int DEFAULT_ACCEPT_COUNT = 100;
 
     private final ServerSocket serverSocket;
+
     private boolean stopped;
 
     public Connector() {
@@ -38,6 +41,7 @@ public class Connector implements Runnable {
         }
     }
 
+    // 커넥터 데몬 스레드 시작
     public void start() {
         var thread = new Thread(this);
         thread.setDaemon(true);
@@ -49,7 +53,9 @@ public class Connector implements Runnable {
     @Override
     public void run() {
         // 클라이언트가 연결될때까지 대기한다.
+        // 종료 조건은 콘솔에 무엇인가를 입력하는 경우
         while (!stopped) {
+
             connect();
         }
     }
@@ -62,6 +68,7 @@ public class Connector implements Runnable {
         }
     }
 
+    // http 1.1 processor가 시작되는 곳
     private void process(final Socket connection) {
         if (connection == null) {
             return;
