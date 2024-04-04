@@ -13,6 +13,10 @@ public class HttpRequestLine {
     private HttpMethod method;
     private String httpVersion;
 
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
     public String getUri() {
         return uri;
     }

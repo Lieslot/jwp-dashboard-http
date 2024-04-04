@@ -16,7 +16,7 @@ public class HttpRequestBody {
         if (input == null) {
             throw new IllegalArgumentException();
         }
-        System.out.println(input);
+
         int index = input.indexOf(":");
 
         if (index == -1) {

@@ -3,7 +3,8 @@ package nextstep.custom.response;
 
 public enum HttpStatusCode {
 
-    OK("200");
+    OK("200"),
+    FOUND("302");
 
 
     public String getStatusCode() {

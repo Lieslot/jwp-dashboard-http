@@ -14,6 +14,7 @@ public class HttpResponseHeader {
         properties.putIfAbsent(key, value);
     }
 
+
     public String parse() {
         StringBuilder value = new StringBuilder();
         for (Map.Entry<String, String> property : properties.entrySet()) {
@@ -23,10 +24,9 @@ public class HttpResponseHeader {
             }
 
             value.append(String.join(": ", List.of(property.getKey(), property.getValue())))
-                    .append(" ")
+                 .append(" ")
                  .append("\r\n");
         }
-
 
         return value.toString();
     }

@@ -2,6 +2,8 @@ package nextstep.custom.request;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +15,18 @@ public class HttpRequestParser {
 
     public static HttpRequest parse(BufferedReader bufferedReader) throws IOException {
 
-        log.info("http request parsing start");
         String firstLine = bufferedReader.readLine();
         HttpRequestLine httpRequestLine = new HttpRequestLine(firstLine);
-        log.info("http request RequestLine parse");
 
-        log.info("http request readline parse");
+        Map<String, String> queryParams = new HashMap<>();
+        String uri = httpRequestLine.getUri();
+        String[] uriComponents = uri.split("\\?");
+
+        if (hasQueryString(uri)) {
+            queryParams = createQueryParams(uriComponents[1]);
+        }
+        httpRequestLine.setUri(uriComponents[0]);
+
         HttpRequestHeader httpRequestHeader = new HttpRequestHeader();
 
         String line;
@@ -26,25 +34,38 @@ public class HttpRequestParser {
             httpRequestHeader.add(line);
         }
 
-
-        int contentLength = Integer.parseInt(httpRequestHeader.get("Content-Length").orElse("0"));
+        int contentLength = Integer.parseInt(httpRequestHeader.get("Content-Length")
+                                                              .orElse("0"));
 
         char[] content = new char[contentLength];
-
         bufferedReader.read(content);
 
+        String body = new String(content);
         log.info("Http request parsing end");
-        return new HttpRequest(httpRequestLine, httpRequestHeader, new String(content));
+        return new HttpRequest(httpRequestLine, httpRequestHeader, body, queryParams);
 
 
     }
 
-    private static byte[] addEOF(byte[] bytes) {
-        byte[] inputBytes = new byte[bytes.length + 1];
+    private static Map<String, String> createQueryParams(String queryString) {
 
-        System.arraycopy(bytes, 0, inputBytes, 0, bytes.length);
-        inputBytes[bytes.length] = 0;
-        return inputBytes;
+        Map<String, String> results = new HashMap<>();
+
+        String[] split = queryString.split("&");
+        for (String query : split) {
+
+            String[] keyValue = query.split("=");
+            results.put(keyValue[0], keyValue[1]);
+
+
+        }
+
+        return results;
+
+    }
+
+    private static boolean hasQueryString(String url) {
+        return url.contains("?");
     }
 
 
