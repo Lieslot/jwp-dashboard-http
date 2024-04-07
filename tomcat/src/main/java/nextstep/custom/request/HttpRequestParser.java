@@ -42,6 +42,8 @@ public class HttpRequestParser {
 
         String body = new String(content);
         log.info("Http request parsing end");
+
+
         return new HttpRequest(httpRequestLine, httpRequestHeader, body, queryParams);
 
 

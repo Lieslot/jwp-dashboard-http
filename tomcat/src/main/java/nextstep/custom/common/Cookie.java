@@ -28,6 +28,10 @@ public class Cookie {
         return new Cookie(properties);
     }
 
+    public String get(String key) {
+        return properties.get(key);
+    }
+
 
 
 

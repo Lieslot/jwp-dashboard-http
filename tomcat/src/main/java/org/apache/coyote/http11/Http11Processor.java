@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 public class Http11Processor implements Runnable, Processor {
 
     private static final Logger log = LoggerFactory.getLogger(Http11Processor.class);
+    private static final String SESSION_ID = "JSESSIONID";
 
     private final Socket connection;
 
@@ -75,6 +76,7 @@ public class Http11Processor implements Runnable, Processor {
 
         Optional<User> searchResult = InMemoryUserRepository.findByAccount(account);
 
+
         if (searchResult.isEmpty()) {
             return processGetLogin(httpRequest, httpResponse);
         }
@@ -90,15 +92,11 @@ public class Http11Processor implements Runnable, Processor {
 
         httpResponse.addHeaderParameter("Location", "/index.html");
         httpResponse.addHeaderParameter("Content-Type", "text/html");
-        httpResponse.addHeaderParameter("Set-Cookie", "JSESSIONID="+sessionID);
+        httpResponse.addHeaderParameter("Set-Cookie", "JSESSIONID=" + sessionID);
         httpResponse.setHttpStatusCode(HttpStatusCode.FOUND);
 
         return httpResponse.toString();
     }
-
-
-
-
 
 
 //    private String getNotFoundPage(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
@@ -119,8 +117,21 @@ public class Http11Processor implements Runnable, Processor {
         String uri = httpRequest.getRequestLine()
                                 .getUri();
 
+        if (httpRequest.checkSessionIDExists()) {
+            return response401Page(httpResponse);
+        }
+
         String httpResponseBody = getResponseBody(uri + ".html");
 
+        httpResponse.addHeaderParameter("Content-Type", "text/html");
+        httpResponse.setHttpResponseBody(httpResponseBody);
+        httpResponse.setHttpStatusCode(HttpStatusCode.OK);
+
+        return httpResponse.toString();
+    }
+
+    private String response401Page(HttpResponse httpResponse) throws IOException {
+        String httpResponseBody = getResponseBody("/404.html");
         httpResponse.addHeaderParameter("Content-Type", "text/html");
         httpResponse.setHttpResponseBody(httpResponseBody);
         httpResponse.setHttpStatusCode(HttpStatusCode.OK);

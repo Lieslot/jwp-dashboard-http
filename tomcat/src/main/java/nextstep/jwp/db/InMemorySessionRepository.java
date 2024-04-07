@@ -22,5 +22,15 @@ public class InMemorySessionRepository {
         return sessionID;
     }
 
+    public static boolean exists(String id) {
+
+        return SESSION.containsKey(id);
+    }
+
+
+
+
+
+
 
 }
