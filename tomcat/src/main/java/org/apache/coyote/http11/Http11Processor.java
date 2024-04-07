@@ -14,6 +14,7 @@ import nextstep.custom.request.HttpRequest;
 import nextstep.custom.request.HttpRequestParser;
 import nextstep.custom.response.HttpResponse;
 import nextstep.custom.response.HttpStatusCode;
+import nextstep.jwp.db.InMemorySessionRepository;
 import nextstep.jwp.db.InMemoryUserRepository;
 import nextstep.jwp.exception.UncheckedServletException;
 import nextstep.jwp.model.User;
@@ -85,12 +86,20 @@ public class Http11Processor implements Runnable, Processor {
             return processGetLogin(httpRequest, httpResponse);
         }
 
+        String sessionID = InMemorySessionRepository.create();
+
         httpResponse.addHeaderParameter("Location", "/index.html");
         httpResponse.addHeaderParameter("Content-Type", "text/html");
+        httpResponse.addHeaderParameter("Set-Cookie", "JSESSIONID="+sessionID);
         httpResponse.setHttpStatusCode(HttpStatusCode.FOUND);
-        return httpResponse.toString();
 
+        return httpResponse.toString();
     }
+
+
+
+
+
 
 //    private String getNotFoundPage(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
 //        String uri = httpRequest.getRequestLine()
