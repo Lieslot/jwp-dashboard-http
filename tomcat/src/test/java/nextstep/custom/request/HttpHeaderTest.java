@@ -6,18 +6,16 @@ import org.junit.jupiter.api.Test;
 
 public class HttpHeaderTest {
 
+	@Test
+	void addMethodTest() {
 
-    @Test
-    void addMethodTest() {
+		HttpRequestHeader httpRequestHeader = new HttpRequestHeader();
 
-        HttpRequestHeader httpRequestHeader = new HttpRequestHeader();
+		httpRequestHeader.add("key:value");
 
-        httpRequestHeader.add("key:value");
+		Assertions.assertThat(httpRequestHeader.get("key"))
+			.isEqualTo("value");
 
-        Assertions.assertThat(httpRequestHeader.get("key"))
-                  .isEqualTo("value");
-
-    }
-
+	}
 
 }

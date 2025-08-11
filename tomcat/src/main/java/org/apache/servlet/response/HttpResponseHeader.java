@@ -6,30 +6,26 @@ import java.util.Map;
 
 public class HttpResponseHeader {
 
+	private final Map<String, String> properties = new HashMap<>();
 
-    private final Map<String, String> properties = new HashMap<>();
+	public void put(String key, String value) {
+		properties.putIfAbsent(key, value);
+	}
 
+	public String parse() {
+		StringBuilder value = new StringBuilder();
+		for (Map.Entry<String, String> property : properties.entrySet()) {
 
-    public void put(String key, String value) {
-        properties.putIfAbsent(key, value);
-    }
+			if (property.getValue() == null) {
+				continue;
+			}
 
+			value.append(String.join(": ", List.of(property.getKey(), property.getValue())))
+				.append(" ")
+				.append("\r\n");
+		}
 
-    public String parse() {
-        StringBuilder value = new StringBuilder();
-        for (Map.Entry<String, String> property : properties.entrySet()) {
-
-            if (property.getValue() == null) {
-                continue;
-            }
-
-            value.append(String.join(": ", List.of(property.getKey(), property.getValue())))
-                 .append(" ")
-                 .append("\r\n");
-        }
-
-        return value.toString();
-    }
-
+		return value.toString();
+	}
 
 }

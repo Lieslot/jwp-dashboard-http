@@ -4,26 +4,24 @@ import java.util.Arrays;
 
 public enum HttpMethod {
 
+	GET,
+	POST;
 
-    GET,
-    POST;
+	HttpMethod() {
+	}
 
-    HttpMethod() {
-    }
+	public static HttpMethod of(String methodInput) {
 
-    public static HttpMethod of(String methodInput) {
+		if (methodInput == null) {
+			throw new IllegalArgumentException();
+		}
 
-        if (methodInput == null) {
-            throw new IllegalArgumentException();
-        }
+		HttpMethod[] methods = HttpMethod.values();
 
-        HttpMethod[] methods = HttpMethod.values();
+		return Arrays.stream(methods)
+			.filter(method -> methodInput.equals(method.toString()))
+			.findFirst()
+			.orElseThrow(IllegalArgumentException::new);
 
-        return Arrays.stream(methods)
-                     .filter(method -> methodInput.equals(method.toString()))
-                     .findFirst()
-                     .orElseThrow(IllegalArgumentException::new);
-
-
-    }
+	}
 }

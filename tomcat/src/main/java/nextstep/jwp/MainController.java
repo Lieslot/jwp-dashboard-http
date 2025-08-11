@@ -22,7 +22,6 @@ public class MainController {
 
 	private static final Logger log = LoggerFactory.getLogger(Http11Processor.class);
 
-
 	public String resolve(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
 
 		String url = httpRequest.getRequestLine()
@@ -60,7 +59,6 @@ public class MainController {
 
 		Optional<User> searchResult = InMemoryUserRepository.findByAccount(account);
 
-
 		if (searchResult.isEmpty()) {
 			return processGetLogin(httpRequest, httpResponse);
 		}
@@ -77,14 +75,13 @@ public class MainController {
 		httpResponse.addHeaderParameter("Location", "/index.html");
 		httpResponse.addHeaderParameter("Content-Type", "text/html");
 		// 메인 컨트롤러
-		httpResponse.addHeaderParameter("Set-Cookie", "JSESSIONID=" + sessionID + "; HttpOnly; Path=/; Max-Age=3600" + "; SameSite=Lax");
+		httpResponse.addHeaderParameter("Set-Cookie",
+			"JSESSIONID=" + sessionID + "; HttpOnly; Path=/; Max-Age=3600" + "; SameSite=Lax");
 
 		httpResponse.setHttpStatusCode(HttpStatusCode.FOUND);
 
 		return httpResponse.toString();
 	}
-
-
 
 	private String processGetLogin(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
 		String uri = httpRequest.getRequestLine()
@@ -94,7 +91,7 @@ public class MainController {
 			return response401Page(httpResponse);
 		}
 
-			String httpResponseBody = resolveResponseBody(httpResponse,uri + ".html");
+		String httpResponseBody = resolveResponseBody(httpResponse, uri + ".html");
 
 		httpResponse.addHeaderParameter("Content-Type", "text/html");
 		httpResponse.setHttpResponseBody(httpResponseBody);
@@ -102,7 +99,6 @@ public class MainController {
 
 		return httpResponse.toString();
 	}
-
 
 	private String response401Page(HttpResponse httpResponse) throws IOException {
 		String httpResponseBody = resolveResponseBody(httpResponse, "/401.html");
@@ -121,7 +117,6 @@ public class MainController {
 
 		return httpResponse.toString();
 	}
-
 
 	private String resolveResponseBody(HttpResponse response, String uri) throws IOException {
 
@@ -153,7 +148,6 @@ public class MainController {
 		httpResponse.setHttpResponseBody(httpResponseBody);
 		return httpResponse.toString();
 	}
-
 
 	private String resolveContentType(String uri) {
 

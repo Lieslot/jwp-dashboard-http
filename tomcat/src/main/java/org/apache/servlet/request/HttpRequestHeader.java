@@ -8,59 +8,57 @@ import org.apache.servlet.common.Cookie;
 
 public class HttpRequestHeader {
 
+	private Map<String, String> properties;
+	private Cookie cookie;
 
-    private Map<String, String> properties;
-    private Cookie cookie;
+	public HttpRequestHeader() {
+		properties = new HashMap<>();
+	}
 
-    public HttpRequestHeader() {
-        properties = new HashMap<>();
-    }
+	public void validateInput(String input) {
 
-    public void validateInput(String input) {
+		if (input == null) {
+			throw new IllegalArgumentException();
+		}
 
-        if (input == null) {
-            throw new IllegalArgumentException();
-        }
+		int index = input.indexOf(":");
 
-        int index = input.indexOf(":");
+		if (index == -1) {
+			throw new IllegalArgumentException();
+		}
+	}
 
-        if (index == -1) {
-            throw new IllegalArgumentException();
-        }
-    }
+	public void add(String input) {
+		validateInput(input);
 
+		int splitIndex = input.indexOf(":");
+		String key = input.substring(0, splitIndex)
+			.trim();
+		String value = input.substring(splitIndex + 1)
+			.trim();
 
-    public void add(String input) {
-        validateInput(input);
+		if (key.equals("Cookie")) {
+			this.cookie = Cookie.from(value);
+		}
 
-        int splitIndex = input.indexOf(":");
-        String key = input.substring(0, splitIndex)
-                          .trim();
-        String value = input.substring(splitIndex + 1)
-                            .trim();
+		properties.putIfAbsent(key, value);
+	}
 
-        if (key.equals("Cookie")) {
-            this.cookie = Cookie.from(value);
-        }
+	public Optional<String> get(String key) {
+		String value = properties.get(key);
 
-        properties.putIfAbsent(key, value);
-    }
+		return Optional.ofNullable(value);
+	}
 
-    public Optional<String> get(String key) {
-        String value = properties.get(key);
+	public Optional<String> getFromCookie(String key) {
 
-        return Optional.ofNullable(value);
-    }
+		if (cookie == null) {
+			return Optional.empty();
+		}
 
-    public Optional<String> getFromCookie(String key) {
+		String value = cookie.get(key);
 
-        if (cookie == null) {
-            return Optional.empty();
-        }
-
-        String value = cookie.get(key);
-
-        return Optional.ofNullable(cookie.get(key));
-    }
+		return Optional.ofNullable(cookie.get(key));
+	}
 
 }

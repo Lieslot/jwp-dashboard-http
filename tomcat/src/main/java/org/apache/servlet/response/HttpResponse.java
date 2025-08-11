@@ -6,56 +6,49 @@ import org.apache.servlet.request.HttpRequestLine;
 
 public class HttpResponse {
 
+	public HttpResponse() {
 
-    public HttpResponse() {
+	}
 
-    }
+	private String httpVersion;
+	private HttpStatusCode httpStatusCode;
 
+	private String httpResponseBody;
+	private HttpResponseHeader httpResponseHeader = new HttpResponseHeader();
 
-    private String httpVersion;
-    private HttpStatusCode httpStatusCode;
+	@Override
+	public String toString() {
 
+		return getResponseLineValue() + " \r\n" + httpResponseHeader.parse() + "\r\n" + httpResponseBody;
+	}
 
-    private String httpResponseBody;
-    private HttpResponseHeader httpResponseHeader = new HttpResponseHeader();
+	private String getResponseLineValue() {
+		return String.join(" ",
+			List.of(httpVersion, httpStatusCode.getStatusCode(), httpStatusCode.toString()));
+	}
 
+	public void setHttpVersion(String httpVersion) {
+		this.httpVersion = httpVersion;
+	}
 
-    @Override
-    public String toString() {
+	public void setHttpStatusCode(HttpStatusCode statusCode) {
+		this.httpStatusCode = statusCode;
+	}
 
-        return getResponseLineValue() + " \r\n" + httpResponseHeader.parse() + "\r\n" + httpResponseBody;
-    }
+	public void addHeaderParameter(String key, String value) {
+		httpResponseHeader.put(key, value);
+	}
 
-    private String getResponseLineValue() {
-        return String.join(" ",
-                List.of(httpVersion, httpStatusCode.getStatusCode(), httpStatusCode.toString()));
-    }
+	public void setHttpResponseBody(String httpResponseBody) {
+		this.httpResponseHeader.put("Content-Length", String.valueOf(httpResponseBody.getBytes().length));
+		this.httpResponseBody = httpResponseBody;
+	}
 
-    public void setHttpVersion(String httpVersion) {
-        this.httpVersion = httpVersion;
-    }
+	private static HttpResponseLine createHttpResponseLine(HttpRequestLine requestLine, HttpStatusCode statusCode) {
+		String httpVersion = requestLine.getHttpVersion();
 
-    public void setHttpStatusCode(HttpStatusCode statusCode) {
-        this.httpStatusCode = statusCode;
-    }
+		return new HttpResponseLine(httpVersion, statusCode);
 
-
-    public void addHeaderParameter(String key, String value) {
-        httpResponseHeader.put(key, value);
-    }
-
-    public void setHttpResponseBody(String httpResponseBody) {
-        this.httpResponseHeader.put("Content-Length", String.valueOf(httpResponseBody.getBytes().length));
-        this.httpResponseBody = httpResponseBody;
-    }
-
-
-    private static HttpResponseLine createHttpResponseLine(HttpRequestLine requestLine, HttpStatusCode statusCode) {
-        String httpVersion = requestLine.getHttpVersion();
-
-        return new HttpResponseLine(httpVersion, statusCode);
-
-    }
-
+	}
 
 }
