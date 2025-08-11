@@ -1,4 +1,4 @@
-package nextstep.custom.common;
+package org.apache.servlet.common;
 
 import java.util.HashMap;
 import java.util.Map;

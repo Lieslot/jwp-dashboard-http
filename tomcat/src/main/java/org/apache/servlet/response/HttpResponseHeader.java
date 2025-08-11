@@ -1,4 +1,4 @@
-package nextstep.custom.response;
+package org.apache.servlet.response;
 
 import java.util.HashMap;
 import java.util.List;

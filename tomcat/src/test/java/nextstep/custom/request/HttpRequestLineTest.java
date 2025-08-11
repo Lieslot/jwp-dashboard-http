@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.servlet.request.HttpMethod;
+import org.apache.servlet.request.HttpRequestLine;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

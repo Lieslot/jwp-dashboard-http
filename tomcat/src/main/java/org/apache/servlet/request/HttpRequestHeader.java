@@ -1,9 +1,10 @@
-package nextstep.custom.request;
+package org.apache.servlet.request;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import nextstep.custom.common.Cookie;
+
+import org.apache.servlet.common.Cookie;
 
 public class HttpRequestHeader {
 

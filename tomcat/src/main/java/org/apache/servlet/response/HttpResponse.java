@@ -1,8 +1,8 @@
-package nextstep.custom.response;
+package org.apache.servlet.response;
 
 import java.util.List;
-import nextstep.custom.request.HttpRequestLine;
 
+import org.apache.servlet.request.HttpRequestLine;
 
 public class HttpResponse {
 

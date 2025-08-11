@@ -1,9 +1,9 @@
-package nextstep.custom.request;
+package org.apache.servlet.request;
 
 
 import java.util.Map;
 import java.util.Optional;
-import nextstep.custom.common.Cookie;
+
 import nextstep.jwp.db.InMemorySessionRepository;
 
 public class HttpRequest {
