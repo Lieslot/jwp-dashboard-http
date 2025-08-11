@@ -94,7 +94,7 @@ public class MainController {
 			return response401Page(httpResponse);
 		}
 
-		String httpResponseBody = getResponseBody(uri + ".html");
+			String httpResponseBody = resolveResponseBody(httpResponse,uri + ".html");
 
 		httpResponse.addHeaderParameter("Content-Type", "text/html");
 		httpResponse.setHttpResponseBody(httpResponseBody);
@@ -105,7 +105,7 @@ public class MainController {
 
 
 	private String response401Page(HttpResponse httpResponse) throws IOException {
-		String httpResponseBody = getResponseBody("/401.html");
+		String httpResponseBody = resolveResponseBody(httpResponse, "/401.html");
 		httpResponse.addHeaderParameter("Content-Type", "text/html");
 		httpResponse.setHttpResponseBody(httpResponseBody);
 		httpResponse.setHttpStatusCode(HttpStatusCode.OK);
@@ -113,8 +113,17 @@ public class MainController {
 		return httpResponse.toString();
 	}
 
+	private String response404Page(HttpResponse httpResponse) throws IOException {
+		String httpResponseBody = resolveResponseBody(httpResponse, "/404.html");
+		httpResponse.addHeaderParameter("Content-Type", "text/html");
+		httpResponse.setHttpResponseBody(httpResponseBody);
+		httpResponse.setHttpStatusCode(HttpStatusCode.NOT_FOUND);
 
-	private String getResponseBody(String uri) throws IOException {
+		return httpResponse.toString();
+	}
+
+
+	private String resolveResponseBody(HttpResponse response, String uri) throws IOException {
 
 		if (uri.equals("/")) {
 			return "Hello World!";
@@ -124,8 +133,8 @@ public class MainController {
 			getClassLoader()
 			.getResource("static" + uri);
 
-		if (resource.getFile() == null) {
-			return
+		if (resource == null) {
+			return response404Page(response);
 		}
 
 		File file = new File(resource.getFile());
@@ -136,7 +145,7 @@ public class MainController {
 		String url = httpRequest.getRequestLine()
 			.getUri();
 
-		String httpResponseBody = getResponseBody(url);
+		String httpResponseBody = resolveResponseBody(httpResponse, url);
 		String contentType = resolveContentType(url);
 
 		httpResponse.addHeaderParameter("Content-Type", contentType);
