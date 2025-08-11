@@ -1,6 +1,6 @@
 package nextstep.custom.request;
 
-import org.apache.servlet.request.HttpMethod;
+import org.apache.coyote.http11.request.HttpMethod;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

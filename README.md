@@ -15,11 +15,11 @@ Http 메시지 직접 파싱해서 톰캣 구현해보기
 graph TD
     Client[클라이언트] -- HTTP Request --> Catalina["Catalina: 연결 관리자"];
 
-    subgraph "웹 서버 (Tomcat)"
-        Catalina -- Socket 전달 --> Coyote["Coyote: HTTP 처리기"];
+    subgraph " Catalina "
+        Connector -- Socket 전달 --> Coyote["Coyote: HTTP 처리기"];
     end
 
-    subgraph "요청 처리 파이프라인"
+    subgraph "서블릿(Servlet)"
         Coyote --> ParseRequest["1.HTTP 요청 파싱"];
         ParseRequest --> RouteRequest{"2.요청 라우팅"};
         RouteRequest -- 정적 자원 (e.g. /index.html) --> StaticHandler["정적 컨텐츠 응답"];
@@ -29,7 +29,7 @@ graph TD
             AppLogic --> DB[("(인메모리 DB)")];
         end
 
-        StaticHandler --> GenerateResponse["3. HTTP 응답 생성"];
+        StaticHandler --> GenerateResponse["3.HTTP 응답 생성"];
         AppLogic --> GenerateResponse;
     end
 

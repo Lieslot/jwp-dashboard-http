@@ -7,10 +7,10 @@ import java.nio.file.Files;
 import java.util.Optional;
 
 import org.apache.coyote.http11.Http11Processor;
-import org.apache.servlet.request.HttpMethod;
-import org.apache.servlet.request.HttpRequest;
-import org.apache.servlet.response.HttpResponse;
-import org.apache.servlet.response.HttpStatusCode;
+import org.apache.coyote.http11.request.HttpMethod;
+import org.apache.coyote.http11.request.HttpRequest;
+import org.apache.coyote.http11.response.HttpResponse;
+import org.apache.coyote.http11.response.HttpStatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

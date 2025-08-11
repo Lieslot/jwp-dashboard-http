@@ -1,10 +1,10 @@
-package org.apache.servlet.request;
+package org.apache.coyote.http11.request;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.servlet.common.Cookie;
+import org.apache.coyote.http11.common.Cookie;
 
 public class HttpRequestHeader {
 

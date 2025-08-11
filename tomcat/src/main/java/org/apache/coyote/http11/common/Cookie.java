@@ -1,4 +1,4 @@
-package org.apache.servlet.common;
+package org.apache.coyote.http11.common;
 
 import java.util.HashMap;
 import java.util.Map;

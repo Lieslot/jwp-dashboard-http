@@ -7,9 +7,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.coyote.Processor;
-import org.apache.servlet.request.HttpRequest;
-import org.apache.servlet.request.HttpRequestParser;
-import org.apache.servlet.response.HttpResponse;
+import org.apache.coyote.http11.request.HttpRequest;
+import org.apache.coyote.http11.request.HttpRequestParser;
+import org.apache.coyote.http11.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

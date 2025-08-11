@@ -1,4 +1,4 @@
-package org.apache.servlet.response;
+package org.apache.coyote.http11.response;
 
 public enum HttpStatusCode {
 

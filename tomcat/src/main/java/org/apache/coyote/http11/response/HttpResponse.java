@@ -1,8 +1,8 @@
-package org.apache.servlet.response;
+package org.apache.coyote.http11.response;
 
 import java.util.List;
 
-import org.apache.servlet.request.HttpRequestLine;
+import org.apache.coyote.http11.request.HttpRequestLine;
 
 public class HttpResponse {
 
